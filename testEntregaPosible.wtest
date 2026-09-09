@@ -1,0 +1,42 @@
+import paquete.*
+import jeanGray.*
+import neo.*
+import saraConnor.*
+
+describe "Posible Entrega 1" {
+  test "No Pago, Neo, Matrix" {     //el enunciado no dice nada sobre los creditos de Neo.
+    paquete.destino(matrix)
+    paquete.pago(false)
+    paquete.repartidor(neo)
+    assert.equals(paquete.esPosibleEntrega(), false)
+  }
+}
+describe "Posible Entrega 2" {
+  test "Si Pago, Jean, Matrix" {
+    paquete.destino(matrix)
+    paquete.pago(true)
+    paquete.repartidor(jeanGray)
+    assert.equals(paquete.esPosibleEntrega(), true)
+  }
+}
+describe "Posible Entrega 3" {
+  test "Si Pago, Sara, 70, 1 Acoplado, Puente" {
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(true)
+    paquete.repartidor(saraConnor)
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(camion)
+    camion.cantAcoplados(1)
+    assert.equals(paquete.esPosibleEntrega(), false)
+  }
+}
+describe "Posible Entrega 4" {
+  test "Si Pago, Sara, 70, Moto, Puente" {
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(true)
+    paquete.repartidor(saraConnor)
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(moto)
+    assert.equals(paquete.esPosibleEntrega(), true)
+  }
+}

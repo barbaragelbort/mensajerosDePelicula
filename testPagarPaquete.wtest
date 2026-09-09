@@ -1,0 +1,14 @@
+import paquete.*
+
+describe "PrecioPaquete" {
+  test "Matrix" {
+    paquete.destino(matrix)
+    assert.equals(paquete.precio(), 500)
+  }
+}
+
+describe "PaquetePago" {
+  test "No Pago" {
+    assert.equals(paquete.estaPago(), false)
+  }
+}
