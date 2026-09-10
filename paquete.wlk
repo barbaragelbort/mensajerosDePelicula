@@ -1,5 +1,8 @@
 import jeanGray.*
 import neo.*
+import saraConnor.*
+import destinos.*
+
 object paquete {
   var property destino = matrix
   var property pago = false
@@ -12,18 +15,6 @@ object paquete {
     return pago
   }
   method esPosibleEntrega() {
-    return self.estaPago() && repartidor.puedeIrA_(destino)
-  }
-}
-
-object matrix {
-  method costoEnvio() {
-    return 500
-  }
-}
-
-object puenteBrooklyn {
-  method costoEnvio() {
-    return 150
+    return self.estaPago() && destino.puedePasar_(repartidor)
   }
 }

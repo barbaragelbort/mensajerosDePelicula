@@ -1,11 +1,14 @@
 import paquete.*
+import destinos.*
 
 object neo {
   var property credito = 10
-  const destinoMatrix = matrix
-  const destinoPuente = puenteBrooklyn
 
-  method puedeIrA_(destino) {
-    return (destino == destinoPuente) || (destino == destinoMatrix && credito > 0)
+  method puedeLlamar() {
+    return credito > 0
+  }
+
+  method peso() {
+    return 0
   }
 }

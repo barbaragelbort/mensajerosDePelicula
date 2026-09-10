@@ -1,7 +1,11 @@
 import paquete.*
+import destinos.*
 
 object jeanGray {
-  method puedeIrA_(destino) {
+  method puedeLlamar() {
     return true
+  }
+  method peso() {
+    return 65
   }
 }

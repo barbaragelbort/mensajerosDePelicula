@@ -2,24 +2,50 @@ import paquete.*
 import jeanGray.*
 import neo.*
 import saraConnor.*
+import destinos.*
 
-describe "Posible Entrega 1" {
+describe "Prueba de Paso a Matrix" {
+  test "Jean" {
+    assert.equals(matrix.puedePasar_(jeanGray), true)
+  }
+  test "Neo, No Credito" {
+    neo.credito(0)
+    assert.equals(matrix.puedePasar_(neo), false)
+  }
+  test "Sara, Moto, 70" {
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(moto)
+    assert.equals(matrix.puedePasar_(saraConnor), false)
+  }
+}
+describe "Prueba de Paso a Puente" {
+  test "Jean" {
+    assert.equals(puenteBrooklyn.puedePasar_(jeanGray), true)
+  }
+  test "Neo, No Credito" {
+    neo.credito(0)
+    assert.equals(puenteBrooklyn.puedePasar_(neo), true)
+  }
+  test "Sara, Moto, 70" {
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(moto)
+    assert.equals(puenteBrooklyn.puedePasar_(saraConnor), true)
+  }
+}
+describe "Posible Entrega" {
   test "No Pago, Neo, Matrix" {     //el enunciado no dice nada sobre los creditos de Neo.
     paquete.destino(matrix)
     paquete.pago(false)
     paquete.repartidor(neo)
     assert.equals(paquete.esPosibleEntrega(), false)
   }
-}
-describe "Posible Entrega 2" {
+
   test "Si Pago, Jean, Matrix" {
     paquete.destino(matrix)
     paquete.pago(true)
     paquete.repartidor(jeanGray)
     assert.equals(paquete.esPosibleEntrega(), true)
   }
-}
-describe "Posible Entrega 3" {
   test "Si Pago, Sara, 70, 1 Acoplado, Puente" {
     paquete.destino(puenteBrooklyn)
     paquete.pago(true)
@@ -29,8 +55,6 @@ describe "Posible Entrega 3" {
     camion.cantAcoplados(1)
     assert.equals(paquete.esPosibleEntrega(), false)
   }
-}
-describe "Posible Entrega 4" {
   test "Si Pago, Sara, 70, Moto, Puente" {
     paquete.destino(puenteBrooklyn)
     paquete.pago(true)
