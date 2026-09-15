@@ -1,0 +1,23 @@
+import empresa.*
+import paquete.*
+import neo.*
+import jeanGray.*
+import saraConnor.*
+import destinos.*
+
+describe "Contratar y Despedir" {
+  test "Contratar a Neo" {
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    assert.equals(empresaDeMensajeria.esRepartidorDeEmpresa_(neo), true) 
+  }
+  test "Despedir a repartidor Sara" {
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    empresaDeMensajeria.despedirRepartidor_(saraConnor)
+    assert.equals(empresaDeMensajeria.esRepartidorDeEmpresa_(saraConnor), false)
+  }
+  test "Despedir a no repartidor Sara" {
+    empresaDeMensajeria.despedirRepartidor_(saraConnor)
+    assert.equals(empresaDeMensajeria.esRepartidorDeEmpresa_(saraConnor), false)
+  }
+
+}
