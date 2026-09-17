@@ -1,4 +1,4 @@
-import paquete.*
+import paquetes.*
 import jeanGray.*
 import saraConnor.*
 import neo.*

@@ -1,7 +1,7 @@
 import jeanGray.*
 import neo.*
 import saraConnor.*
-import paquete.*
+import paquetes.*
 
 object matrix {
   method costoEnvio() {

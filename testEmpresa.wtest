@@ -1,5 +1,5 @@
 import empresa.*
-import paquete.*
+import paquetes.*
 import neo.*
 import jeanGray.*
 import saraConnor.*

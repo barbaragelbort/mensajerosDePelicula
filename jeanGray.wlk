@@ -1,4 +1,4 @@
-import paquete.*
+import paquetes.*
 import destinos.*
 
 object jeanGray {
