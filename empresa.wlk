@@ -18,13 +18,21 @@ object empresaDeMensajeria {
     
     method despedirRepartidores() = conjRepartidores.clear()
 
+    method cantRepartidores() {
+      return conjRepartidores.size()
+    }
+
     method esMensajeriaGrande() {
-        return conjRepartidores.size() > 2
+      return self.cantRepartidores() > 2
     }
 
     method puedeSerEntregadoPorPrimRepartidor(paquete) {
       paquete.repartidor(conjRepartidores.anyOne())
       return conjPaquetesEspera.anyOne().esPosibleEntrega()
+    }
+
+    method ingresarPaquete_(paquete) {
+      conjPaquetesEspera.add(paquete)
     }
 
     method pesoDeUltimoRepartidor() {

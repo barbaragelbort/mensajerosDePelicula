@@ -19,5 +19,54 @@ describe "Contratar y Despedir" {
     empresaDeMensajeria.despedirRepartidor_(saraConnor)
     assert.equals(empresaDeMensajeria.esRepartidorDeEmpresa_(saraConnor), false)
   }
+  test "Despedir a todos" {
+    empresaDeMensajeria.despedirRepartidores()
+    assert.equals(empresaDeMensajeria.cantRepartidores(), 0)
+  }
+}
+describe "Es Mensajeria grande" {
+  test "Mas de 2 repartidores, True" {
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    assert.equals(empresaDeMensajeria.esMensajeriaGrande(), true)
 
+  }
+  test "Mas de 2 repartidores, False" {
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    assert.equals(empresaDeMensajeria.esMensajeriaGrande(), false)
+  }
+}
+describe "Posibilidades de Entrega" {
+  test "Neo, Matrix, Pago" {
+    paquete.pago(true)
+    paquete.repartidor(neo)
+    paquete.destino(matrix)
+    empresaDeMensajeria.despedirRepartidores()
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.ingresarPaquete_(paquete)
+    assert.equals(empresaDeMensajeria.puedeSerEntregadoPorPrimRepartidor(paquete), true)
+  }
+  test "Sara, Matrix, Pago" {
+    paquete.pago(true)
+    paquete.repartidor(saraConnor)
+    paquete.destino(matrix)
+    empresaDeMensajeria.despedirRepartidores()
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    empresaDeMensajeria.ingresarPaquete_(paquete)
+    assert.equals(empresaDeMensajeria.puedeSerEntregadoPorPrimRepartidor(paquete), false)
+  }
+}
+describe "Peso de Mensajeros" {
+  test "Peso de Jean" {
+    empresaDeMensajeria.despedirRepartidores()
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    assert.equals(empresaDeMensajeria.pesoDeUltimoRepartidor(), 65)
+  }
+  test "Peso de Neo" {
+    empresaDeMensajeria.despedirRepartidores()
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    assert.equals(empresaDeMensajeria.pesoDeUltimoRepartidor(), 0)
+  }
 }
