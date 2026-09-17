@@ -41,7 +41,6 @@ describe "Es Mensajeria grande" {
 describe "Posibilidades de Entrega" {
   test "Neo, Matrix, Pago" {
     paquete.pago(true)
-    paquete.repartidor(neo)
     paquete.destino(matrix)
     empresaDeMensajeria.despedirRepartidores()
     empresaDeMensajeria.contratarRepartidor_(neo)
@@ -50,7 +49,6 @@ describe "Posibilidades de Entrega" {
   }
   test "Sara, Matrix, Pago" {
     paquete.pago(true)
-    paquete.repartidor(saraConnor)
     paquete.destino(matrix)
     empresaDeMensajeria.despedirRepartidores()
     empresaDeMensajeria.contratarRepartidor_(saraConnor)

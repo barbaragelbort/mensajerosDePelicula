@@ -6,7 +6,6 @@ import destinos.*
 object paquete {
   var property destino = matrix
   var property pago = false
-  var property repartidor = neo
 
   method precio() {
     return destino.costoEnvio()
@@ -14,7 +13,7 @@ object paquete {
   method estaPago() {
     return pago
   }
-  method esPosibleEntrega() {
+  method esPosibleEntrega_(repartidor) {
     return self.estaPago() && destino.puedePasar_(repartidor)
   }
 }
@@ -25,13 +24,11 @@ object paquetito {
   method estaPago() {
     return true
   }
-  method esPosibleEntrega() {
+  method esPosibleEntrega_(repatidor) {
     return true
   }
 }
 object paquetonViajero {
-  var property repartidor = neo //cambiarlo para pasarlo por parametro en esPosibleEntrega()
-
   const listDestinos = []
   const pagosHechos = []
 
@@ -46,7 +43,7 @@ object paquetonViajero {
   method estaPago() {
     return self.cantFaltaPagar() == 0 
   }
-  method esPosibleEntrega() {
+  method esPosibleEntrega_(repartidor) {
     return self.estaPago() && listDestinos.any{destino => destino.puedePasar_(repartidor)}
   }
   

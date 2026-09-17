@@ -27,8 +27,7 @@ object empresaDeMensajeria {
     }
 
     method puedeSerEntregadoPorPrimRepartidor(paquete) {
-      paquete.repartidor(conjRepartidores.anyOne())
-      return conjPaquetesEspera.anyOne().esPosibleEntrega()
+      return conjPaquetesEspera.anyOne().esPosibleEntrega_(conjRepartidores.anyOne())
     }
 
     method ingresarPaquete_(paquete) {

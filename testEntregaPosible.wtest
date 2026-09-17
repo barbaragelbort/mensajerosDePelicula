@@ -33,34 +33,29 @@ describe "Prueba de Paso a Puente" {
   }
 }
 describe "Posible Entrega" {
-  test "No Pago, Neo, Matrix" {     //el enunciado no dice nada sobre los creditos de Neo.
+  test "No Pago, Neo, Matrix" {
     paquete.destino(matrix)
     paquete.pago(false)
-    paquete.repartidor(neo)
-    assert.equals(paquete.esPosibleEntrega(), false)
+    assert.equals(paquete.esPosibleEntrega_(neo), false)
   }
-
   test "Si Pago, Jean, Matrix" {
     paquete.destino(matrix)
     paquete.pago(true)
-    paquete.repartidor(jeanGray)
-    assert.equals(paquete.esPosibleEntrega(), true)
+    assert.equals(paquete.esPosibleEntrega_(jeanGray), true)
   }
   test "Si Pago, Sara, 70, 1 Acoplado, Puente" {
     paquete.destino(puenteBrooklyn)
     paquete.pago(true)
-    paquete.repartidor(saraConnor)
     saraConnor.pesoSara(70)
     saraConnor.vehiculo(camion)
     camion.cantAcoplados(1)
-    assert.equals(paquete.esPosibleEntrega(), false)
+    assert.equals(paquete.esPosibleEntrega_(saraConnor), false)
   }
   test "Si Pago, Sara, 70, Moto, Puente" {
     paquete.destino(puenteBrooklyn)
     paquete.pago(true)
-    paquete.repartidor(saraConnor)
     saraConnor.pesoSara(70)
     saraConnor.vehiculo(moto)
-    assert.equals(paquete.esPosibleEntrega(), true)
+    assert.equals(paquete.esPosibleEntrega_(saraConnor), true)
   }
 }
