@@ -5,7 +5,7 @@ import destinos.*
 describe "PrecioPaquete" {
   test "Matrix" {
     paquete.destino(matrix)
-    assert.equals(paquete.precio(), 500)
+    assert.equals(paquete.precio(), 550)
   }
 }
 

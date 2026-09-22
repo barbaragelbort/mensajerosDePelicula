@@ -8,7 +8,7 @@ object paquete {
   var property pago = false
 
   method precio() {
-    return destino.costoEnvio()
+    return destino.costoEnvio() + 50
   }
   method estaPago() {
     return pago
