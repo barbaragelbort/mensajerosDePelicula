@@ -11,7 +11,9 @@ object empresaDeMensajeria {
     method hayPaquetesEnEspera() {
       return not conjPaquetesEspera.isEmpty()
     }
-
+    method aniadirPaquete_AEspera(paquete) {
+      conjPaquetesEspera.add(paquete)
+    }
     method facturacion() { return facturacion }
 
     method esRepartidorDeEmpresa_(repartidor) {
@@ -51,8 +53,8 @@ object empresaDeMensajeria {
     }
     method enviarPaquete_(unPaquete) {
       if (self.puede_SerEntregadoPorAlgunRepartidor(paquete)) 
-        {facturacion += unPaquete.precio()}
-        else {conjPaquetesEspera.add(unPaquete)}
+        {facturacion = facturacion + unPaquete.precio()}
+        else {self.aniadirPaquete_AEspera(unPaquete)}
     }
     method enviarTodosLosPaquetesDe_(conjPaquetes) {
       conjPaquetes.forEach{paquete => self.enviarPaquete_(paquete)}
@@ -60,5 +62,5 @@ object empresaDeMensajeria {
     method enviarElMasCaroEnEspera() {
       if (self.puede_SerEntregadoPorAlgunRepartidor(conjPaquetesEspera.máx{ paquete => paquete.precio() }))
         { self.enviarPaquete_(conjPaquetesEspera.máx {paquete => paquete.precio()})}
-    }
-}
+    }//no entiendo por qué no funciona, probé haciendo conjPaquetesEspera una lista tambien y nada.
+}    //estoy usando mal algun mensaje nativo?

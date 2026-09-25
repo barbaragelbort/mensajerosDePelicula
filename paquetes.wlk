@@ -50,3 +50,23 @@ object paquetonViajero {
   }
   method sumarDestino(destino) = listDestinos.add(destino)
 }
+object caja {
+  var property destino = nuncaJamas
+  var property pesoPaquete = 0
+  const pagosHechos = []
+
+  method sumarPago_(pago) = pagosHechos.add(pago)
+
+  method precio() {
+    return destino.costoEnvio() + 10 * pesoPaquete
+  }
+  method cantFaltaPagar() { 
+    return self.precio() - pagosHechos.sum()
+  }
+  method estaPago() {
+    return self.cantFaltaPagar() == 0
+  }
+  method esPosibleEntrega_(repartidor) {
+    return self.estaPago() && destino.puedePasar_(repartidor)
+  }
+}

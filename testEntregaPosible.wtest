@@ -1,3 +1,4 @@
+import peterPan.*
 import empresa.*
 import paquetes.*
 import jeanGray.*
@@ -114,7 +115,46 @@ describe "Entregas de Diferentes Tamaños Parte 3" {
 describe "Enviar conjuntos de paquetes" {
   test "Envios Hechos 2 paquetitos" {
     empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    paquetito.destino(matrix)
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(true)
     empresaDeMensajeria.enviarTodosLosPaquetesDe_([paquete, paquetito])
     assert.equals(empresaDeMensajeria.hayPaquetesEnEspera(), false)
+  }
+  test "Envios No Hechos 2 paquetitos" {
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    paquetito.destino(puenteBrooklyn)
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(false)
+    empresaDeMensajeria.enviarTodosLosPaquetesDe_([paquete, paquetito])
+    assert.equals(empresaDeMensajeria.hayPaquetesEnEspera(), true)
+  }
+}
+describe "Enviar el más caro" { //no funciona, aiuda
+  test "Envio del paqueta mas caro en espera" {
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.aniadirPaquete_AEspera(paquete)
+    paquete.pago(true)
+    paquete.destino(matrix)
+    empresaDeMensajeria.enviarElMasCaroEnEspera()
+    assert.equals(empresaDeMensajeria.facturacion() > 0, true)
+  }
+}
+describe "Probando Nunca Jamas y Peter Pan" {
+  test "Peter puede llevar paquete" {
+    empresaDeMensajeria.contratarRepartidor_(peterPan)
+    paquete.destino(nuncaJamas)
+    paquete.pago(true)
+    assert.equals(empresaDeMensajeria.puedeSerEntregadoPorPrimRepartidor(paquete), true)
+  }//no tengo idea de por que no funciona NJ, tiene la misma logica que los otros destinos.
+  test "Peter puede llevar caja" {
+    empresaDeMensajeria.contratarRepartidor_(peterPan)
+    caja.destino(puenteBrooklyn)
+    caja.sumarPago_(caja.precio())
+    empresaDeMensajeria.enviarPaquete_(caja)
+    assert.equals(empresaDeMensajeria.puede_SerEntregadoPorAlgunRepartidor(caja), true)
+  }
+  test "Peter no puede pasar a Matrix" {
+    assert.equals(matrix.puedePasar_(peterPan), false)
   }
 }

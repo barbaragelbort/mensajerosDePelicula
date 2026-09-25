@@ -4,12 +4,16 @@ import destinos.*
 object saraConnor {
   var property vehiculo = moto
   var property pesoSara = 65
+  const edad = 35
 
   method peso() {
     return pesoSara + vehiculo.peso()
   }
   method puedeLlamar() {
     return false
+  }
+  method tienePolvosMagicos() {
+    return edad < 12
   }
 }
 object moto {
