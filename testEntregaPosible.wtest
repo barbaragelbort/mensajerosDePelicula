@@ -1,3 +1,4 @@
+import empresa.*
 import paquetes.*
 import jeanGray.*
 import neo.*
@@ -57,5 +58,63 @@ describe "Posible Entrega" {
     saraConnor.pesoSara(70)
     saraConnor.vehiculo(moto)
     assert.equals(paquete.esPosibleEntrega_(saraConnor), true)
+  }
+}
+describe "Entregas de Diferentes Tamaños Parte 3" {
+  test "PaquetonViajero, Puente y Matrix, Jean" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    paquetonViajero.sumarDestino(puenteBrooklyn)
+    paquetonViajero.sumarDestino(matrix)
+    paquetonViajero.sumarPago_(paquetonViajero.precio())
+    assert.equals(empresaDeMensajeria.puede_SerEntregadoPorAlgunRepartidor(paquetonViajero), true)
+  }
+  test "Paquetito, Matrix, Neo, 0" { //aunque paquetito siempre pueda ser enviado, neo no puede pasar.
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    neo.credito(0)
+    assert.equals(empresaDeMensajeria.puede_SerEntregadoPorAlgunRepartidor(paquetito), false)
+  }
+  test "Todos los que pueden llevar paqueton viajero" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    neo.credito(50)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    paquetonViajero.sumarDestino(puenteBrooklyn)
+    paquetonViajero.sumarDestino(matrix)
+    paquetonViajero.sumarPago_(paquetonViajero.precio())
+    assert.equals(empresaDeMensajeria.repartidoresQuePuedenEnviar_(paquetonViajero), #{jeanGray, neo})
+  }
+  test "Mensajeria con sobrepeso" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    saraConnor.vehiculo(camion)
+    camion.cantAcoplados(10)
+    assert.equals(empresaDeMensajeria.esEmpresaConSobrepeso(), true)
+  }
+  test "Mensajeria sin sobrepeso" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    assert.equals(empresaDeMensajeria.esEmpresaConSobrepeso(), false)
+  }
+  test "Entrega Hecha" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    paquete.pago(true)
+    empresaDeMensajeria.enviarPaquete_(paquete)
+    assert.equals(empresaDeMensajeria.facturacion(), paquete.precio())
+  }
+  test "Entrega no Hecha" {
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    paquete.destino(matrix)
+    paquete.pago(true)
+    empresaDeMensajeria.enviarPaquete_(paquete)
+    assert.equals( empresaDeMensajeria.hayPaquetesEnEspera() , true)
+  }
+}
+describe "Enviar conjuntos de paquetes" {
+  test "Envios Hechos 2 paquetitos" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    empresaDeMensajeria.enviarTodosLosPaquetesDe_([paquete, paquetito])
+    assert.equals(empresaDeMensajeria.hayPaquetesEnEspera(), false)
   }
 }

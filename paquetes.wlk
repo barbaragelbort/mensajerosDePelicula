@@ -18,14 +18,16 @@ object paquete {
   }
 }
 object paquetito {
+  var property destino = matrix
+
   method precio() {
     return 0
   }
   method estaPago() {
     return true
   }
-  method esPosibleEntrega_(repatidor) {
-    return true
+  method esPosibleEntrega_(repartidor) {
+    return self.estaPago() && destino.puedePasar_(repartidor)
   }
 }
 object paquetonViajero {
@@ -44,7 +46,7 @@ object paquetonViajero {
     return self.cantFaltaPagar() == 0 
   }
   method esPosibleEntrega_(repartidor) {
-    return self.estaPago() && listDestinos.any{destino => destino.puedePasar_(repartidor)}
+    return self.estaPago() && listDestinos.all{destino => destino.puedePasar_(repartidor)}
   }
-  
+  method sumarDestino(destino) = listDestinos.add(destino)
 }
