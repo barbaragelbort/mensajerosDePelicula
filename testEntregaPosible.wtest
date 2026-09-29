@@ -1,0 +1,160 @@
+import peterPan.*
+import empresa.*
+import paquetes.*
+import jeanGray.*
+import neo.*
+import saraConnor.*
+import destinos.*
+
+describe "Prueba de Paso a Matrix" {
+  test "Jean" {
+    assert.equals(matrix.puedePasar_(jeanGray), true)
+  }
+  test "Neo, No Credito" {
+    neo.credito(0)
+    assert.equals(matrix.puedePasar_(neo), false)
+  }
+  test "Sara, Moto, 70" {
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(moto)
+    assert.equals(matrix.puedePasar_(saraConnor), false)
+  }
+}
+describe "Prueba de Paso a Puente" {
+  test "Jean" {
+    assert.equals(puenteBrooklyn.puedePasar_(jeanGray), true)
+  }
+  test "Neo, No Credito" {
+    neo.credito(0)
+    assert.equals(puenteBrooklyn.puedePasar_(neo), true)
+  }
+  test "Sara, Moto, 70" {
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(moto)
+    assert.equals(puenteBrooklyn.puedePasar_(saraConnor), true)
+  }
+}
+describe "Posible Entrega" {
+  test "No Pago, Neo, Matrix" {
+    paquete.destino(matrix)
+    paquete.pago(false)
+    assert.equals(paquete.esPosibleEntrega_(neo), false)
+  }
+  test "Si Pago, Jean, Matrix" {
+    paquete.destino(matrix)
+    paquete.pago(true)
+    assert.equals(paquete.esPosibleEntrega_(jeanGray), true)
+  }
+  test "Si Pago, Sara, 70, 1 Acoplado, Puente" {
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(true)
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(camion)
+    camion.cantAcoplados(1)
+    assert.equals(paquete.esPosibleEntrega_(saraConnor), false)
+  }
+  test "Si Pago, Sara, 70, Moto, Puente" {
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(true)
+    saraConnor.pesoSara(70)
+    saraConnor.vehiculo(moto)
+    assert.equals(paquete.esPosibleEntrega_(saraConnor), true)
+  }
+}
+describe "Entregas de Diferentes Tamaños Parte 3" {
+  test "PaquetonViajero, Puente y Matrix, Jean" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    paquetonViajero.sumarDestino(puenteBrooklyn)
+    paquetonViajero.sumarDestino(matrix)
+    paquetonViajero.sumarPago_(paquetonViajero.precio())
+    assert.equals(empresaDeMensajeria.puede_SerEntregadoPorAlgunRepartidor(paquetonViajero), true)
+  }
+  test "Paquetito, Matrix, Neo, 0" { //aunque paquetito siempre pueda ser enviado, neo no puede pasar.
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    neo.credito(0)
+    assert.equals(empresaDeMensajeria.puede_SerEntregadoPorAlgunRepartidor(paquetito), false)
+  }
+  test "Todos los que pueden llevar paqueton viajero" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    neo.credito(50)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    paquetonViajero.sumarDestino(puenteBrooklyn)
+    paquetonViajero.sumarDestino(matrix)
+    paquetonViajero.sumarPago_(paquetonViajero.precio())
+    assert.equals(empresaDeMensajeria.repartidoresQuePuedenEnviar_(paquetonViajero), #{jeanGray, neo})
+  }
+  test "Mensajeria con sobrepeso" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    saraConnor.vehiculo(camion)
+    camion.cantAcoplados(10)
+    assert.equals(empresaDeMensajeria.esEmpresaConSobrepeso(), true)
+  }
+  test "Mensajeria sin sobrepeso" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    assert.equals(empresaDeMensajeria.esEmpresaConSobrepeso(), false)
+  }
+  test "Entrega Hecha" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    paquete.pago(true)
+    empresaDeMensajeria.enviarPaquete_(paquete)
+    assert.equals(empresaDeMensajeria.facturacion(), paquete.precio())
+  }
+  test "Entrega no Hecha" {
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    paquete.destino(matrix)
+    paquete.pago(true)
+    empresaDeMensajeria.enviarPaquete_(paquete)
+    assert.equals( empresaDeMensajeria.hayPaquetesEnEspera() , true)
+  }
+}
+describe "Enviar conjuntos de paquetes" {
+  test "Envios Hechos 2 paquetitos" {
+    empresaDeMensajeria.contratarRepartidor_(jeanGray)
+    paquetito.destino(matrix)
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(true)
+    empresaDeMensajeria.enviarTodosLosPaquetesDe_([paquete, paquetito])
+    assert.equals(empresaDeMensajeria.hayPaquetesEnEspera(), false)
+  }
+  test "Envios No Hechos 2 paquetitos" {
+    empresaDeMensajeria.contratarRepartidor_(saraConnor)
+    paquetito.destino(puenteBrooklyn)
+    paquete.destino(puenteBrooklyn)
+    paquete.pago(false)
+    empresaDeMensajeria.enviarTodosLosPaquetesDe_([paquete, paquetito])
+    assert.equals(empresaDeMensajeria.hayPaquetesEnEspera(), true)
+  }
+}
+describe "Enviar el más caro" { //no funciona, aiuda
+  test "Envio del paqueta mas caro en espera" {
+    empresaDeMensajeria.contratarRepartidor_(neo)
+    empresaDeMensajeria.aniadirPaquete_AEspera(paquete)
+    paquete.pago(true)
+    paquete.destino(matrix)
+    empresaDeMensajeria.enviarElMasCaroEnEspera()
+    assert.equals(empresaDeMensajeria.facturacion() > 0, true)
+  }
+}
+describe "Probando Nunca Jamas y Peter Pan" {
+  test "Peter puede llevar paquete" {
+    empresaDeMensajeria.contratarRepartidor_(peterPan)
+    paquete.destino(nuncaJamas)
+    paquete.pago(true)
+    assert.equals(empresaDeMensajeria.puedeSerEntregadoPorPrimRepartidor(paquete), true)
+  }//no tengo idea de por que no funciona NJ, tiene la misma logica que los otros destinos.
+  test "Peter puede llevar caja" {
+    empresaDeMensajeria.contratarRepartidor_(peterPan)
+    caja.destino(puenteBrooklyn)
+    caja.sumarPago_(caja.precio())
+    empresaDeMensajeria.enviarPaquete_(caja)
+    assert.equals(empresaDeMensajeria.puede_SerEntregadoPorAlgunRepartidor(caja), true)
+  }
+  test "Peter no puede pasar a Matrix" {
+    assert.equals(matrix.puedePasar_(peterPan), false)
+  }
+}
